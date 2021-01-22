@@ -1,0 +1,363 @@
+﻿<Page
+    x:Class="TestRepeater.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:TestRepeater.Core.Models"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:convt="using:TestRepeater.Converters"
+    xmlns:ctl="using:TestRepeater.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:helpers="using:TestRepeater.Helpers"
+    xmlns:premiumplus="using:TestRepeater.Helpers.PremiumPlus"
+    xmlns:home_helper="using:TestRepeater.Helpers.Home"
+    xmlns:Windows10version1809="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded"
+    SizeChanged="Page_SizeChanged">
+
+    <Page.Resources>
+        <convt:ImageSourceConverter x:Key="imageSourceConverter"/>
+        <convt:HomeCardHeightConverter x:Key="cardHeightConverter"/>
+        <convt:HomeCardWidthConverter x:Key="cardWidthConverter"/>
+        <convt:HomeRiverHeightConverter x:Key="riverHeightConverter"/>
+        <convt:ColorConverter x:Key="colorConverter"/>
+
+        <DataTemplate x:Key="VerticalTemplate" x:DataType="model:GridItem">
+            <Grid Margin="50 0 0 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{x:Bind name, Mode=OneWay}" FontSize="40" Margin="0 60 0 0"/>
+
+                <ScrollViewer
+                    Grid.Row="1"
+                    VerticalScrollBarVisibility="Hidden"
+                    HorizontalScrollBarVisibility="Hidden"
+                    VerticalScrollMode="Disabled"
+                    HorizontalScrollMode="Disabled">
+                    <muxc:ItemsRepeater
+                    x:Name="HorizontalRepeater"
+                    Margin="0 40 0 0"
+                    ItemsSource="{x:Bind product, Mode=OneWay}"
+                    ItemTemplate="{StaticResource HorizontalTemplate}">
+                        <muxc:ItemsRepeater.Layout>
+                            <muxc:StackLayout Orientation="Horizontal" Spacing="0.0"/>
+                        </muxc:ItemsRepeater.Layout>
+                    </muxc:ItemsRepeater>
+                </ScrollViewer>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="HorizontalTemplate" x:DataType="model:ProductItem">
+            <Grid
+                DataContext="{x:Bind}"
+                Margin="0 0 50 0"
+                Width="{x:Bind type, Converter={StaticResource cardWidthConverter}}"
+                Tapped="GridCardItem_Tapped">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid VerticalAlignment="Top">
+                    <Button
+                    Name="ButtonCardItem"
+                    Margin="0"
+                    Padding="0"
+                    Background="Transparent"
+                    Windows10version1809:CornerRadius="0"
+                    Style="{StaticResource HomeCardButton}"
+                    PreviewKeyDown="ButtonCardItem_PreviewKeyDown"
+                    PointerEntered="ButtonCardItem_PointerEntered"
+                    PointerExited="ButtonCardItem_PointerExited"
+                    GotFocus="ButtonCardItem_GotFocus"
+                    LostFocus="ButtonCardItem_LostFocus">
+                        <Grid
+                        x:Name="GridCardItem"
+                        Height="{x:Bind type, Converter={StaticResource cardHeightConverter}}"
+                        Width="{x:Bind type, Converter={StaticResource cardWidthConverter}}"
+                        >
+                            <controls:ImageEx
+                                Opacity="0.8"
+                                CacheMode="BitmapCache"
+                                PlaceholderSource="{x:Bind is_movie, Converter={StaticResource imageSourceConverter}}"
+                                Source="{x:Bind cover_image_url, Mode=OneWay}"
+                                Stretch="UniformToFill"/>
+
+                            <ProgressBar
+                            Height="6"
+                            VerticalAlignment="Bottom"
+                            Foreground="{StaticResource ViuYellow}"
+                            Background="{StaticResource ViuGreyColor}"
+                            Value="{x:Bind watched_percent}"
+                            CornerRadius="0"
+                            Margin="{x:Bind home_helper:HomeCardProgressBarMarginHelper.ProgressBarMargin(), Mode=OneWay}"
+                            Visibility="{x:Bind home_helper:HomeCardProgressBarVisibilityHelper.ProgressBarVisibility(watched_percent), Mode=OneWay}"/>
+                            <Border Background="{StaticResource EpisodeBackgroundOpacityColor}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Margin="{x:Bind home_helper:HomeCardEpisodeMarginHelper.EpisodeMargin(watched_percent), Mode=OneWay}"
+                                Visibility="{x:Bind helpers:EpisodeStringHelper.EpisodeVisibility(is_movie), Mode=OneWay}">
+                                <TextBlock
+                                Margin="12, 6"
+                                FontSize="28"
+                                Text="{x:Bind helpers:EpisodeStringHelper.EpisodeConverter(number, x:Null), Mode=OneWay}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Bottom"/>
+                            </Border>
+                        </Grid>
+                    </Button>
+                    <Image
+                        Margin="10 10 0 0"
+                        Width="48" Height="48"
+                        Source="/Assets/Slices/PremiumPlus/PPlus.png"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Visibility="{x:Bind premiumplus:PremiumPlusIconVisibilityHelper.PremiumPlusIconVisibility(user_level), Mode=OneWay}"/>
+                </Grid>
+
+                <TextBlock
+                    Grid.Row="1"
+                    FontSize="32"
+                    Margin="0 12 0 0"
+                    Opacity="0.8"
+                    Foreground="Gray"
+                    Text="{x:Bind home_helper:HomeCardTextHelper.FirstLineCardText(type, data_type, number, is_movie, use_series_title, synopsis, series_name, focus_name, series_category_name), Mode=OneWay}"
+                    TextTrimming="CharacterEllipsis"
+                    TextWrapping="{x:Bind helpers:TextWrappingHelper.GetTextWrapping(is_movie)}"
+                    MaxLines="2"
+                    HorizontalAlignment="Left"/>
+                <TextBlock
+                    Grid.Row="2"
+                    FontSize="28"
+                    Margin="0 8 0 0"
+                    Foreground="Black"
+                    Text="{x:Bind home_helper:HomeCardTextHelper.SecondLineCardText(type, data_type, number, is_movie, use_series_title, synopsis, series_name, focus_name, series_category_name), Mode=OneWay}"
+                    TextTrimming="CharacterEllipsis"
+                    HorizontalAlignment="Left"/>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid>
+        <muxc:ItemsRepeaterScrollHost>
+            <ScrollViewer
+                x:Name="ScrollViewerHome"
+                HorizontalScrollMode="Disabled"
+                VerticalScrollMode="Enabled"
+                VerticalScrollBarVisibility="Auto"
+                ViewChanged="ScrollViewerHome_ViewChanged"
+                SizeChanged="ScrollViewerHome_SizeChanged">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <RelativePanel
+                            x:Name="RelativePanelHomeHeader">
+                        <FlipView
+                                x:Name="FlipViewBanner"
+                                Height="511"
+                                FocusVisualPrimaryThickness="0"
+                                FocusVisualSecondaryThickness="0"
+                                FocusVisualPrimaryBrush="#FFBF00"
+                                FocusVisualSecondaryBrush="#FFBF00"
+                                FocusVisualMargin="0"
+                                Style="{StaticResource FlipViewViuStyle}"
+                                GotFocus="FlipViewBanner_GotFocus"
+                                LostFocus="FlipViewBanner_LostFocus"
+                                PointerEntered="FlipViewBanner_PointerEntered"
+                                PointerExited="FlipViewBanner_PointerExited"
+                                PointerWheelChanged="FlipViewBanner_PointerWheelChanged"
+                                Tapped="FlipViewBanner_Tapped"
+                                PreviewKeyDown="FlipViewBanner_PreviewKeyDown">
+                            <FlipView.ItemTemplate>
+                                <DataTemplate x:DataType="model:BannerItem">
+                                    <RelativePanel>
+                                        <controls:ImageEx
+                                                x:Name="ImageExBanner"
+                                                Opacity="0.5"
+                                                IsCacheEnabled="True"
+                                                Source="{x:Bind image_url}"
+                                                Stretch="UniformToFill"
+                                                PlaceholderSource="ms-appx:///Assets/Slices/首页 banner@3x.png"
+                                                PlaceholderStretch="UniformToFill"
+                                                PointerEntered="ImageExBanner_PointerEntered"
+                                                PointerExited="ImageExBanner_PointerExited"/>
+
+                                        <StackPanel
+                                                Width="1000"
+                                                Margin="50 0 0 60"
+                                                RelativePanel.AlignBottomWithPanel="True">
+                                            <StackPanel
+                                                    Margin="0 0 0 20"
+                                                    HorizontalAlignment="Left"
+                                                    Orientation="Horizontal">
+                                                <Image
+                                                        Height="38" Width="38"
+                                                        Source="/Assets/Slices/PremiumPlus/PPlus.png"
+                                                        Visibility="{x:Bind premiumplus:PremiumPlusIconVisibilityHelper.PremiumPlusIconVisibility(user_level), Mode=OneWay}"/>
+                                                <Border
+                                                        Background="{StaticResource ViuBannerFirstLineTextColor}"
+                                                        Visibility="{x:Bind helpers:ComingSoonHelper.EpisodeCardVisibility(product_schedule_start_time), Mode=OneWay}">
+                                                    <TextBlock Text="coming_soon" FontSize="24" Foreground="Black" Margin="10 4"/>
+                                                </Border>
+                                            </StackPanel>
+                                            <controls:DropShadowPanel
+                                                    Margin="0 10 0 0"
+                                                    ShadowOpacity=".8"
+                                                    BlurRadius="4"
+                                                    OffsetX="2"
+                                                    OffsetY="2"
+                                                    Color="Black">
+                                                <TextBlock
+                                                        FontSize="50"
+                                                        TextWrapping="WrapWholeWords"
+                                                        MaxLines="2"
+                                                        Text="{x:Bind series_name}"/>
+                                            </controls:DropShadowPanel>
+                                            <controls:DropShadowPanel
+                                                    Margin="0 10 0 0"
+                                                    ShadowOpacity=".8"
+                                                    BlurRadius="4"
+                                                    OffsetX="2"
+                                                    OffsetY="2"
+                                                    Color="Black">
+                                                <TextBlock
+                                                        FontSize="28"
+                                                        Text="{x:Bind helpers:EpisodeStringHelper.EpisodeConverterForHomePage(product_number, series_category_name, product_synopsis), Mode=OneWay}"/>
+                                            </controls:DropShadowPanel>
+                                            <controls:DropShadowPanel
+                                                    Margin="0 20 0 0"
+                                                    ShadowOpacity=".8"
+                                                    BlurRadius="4"
+                                                    OffsetX="2"
+                                                    OffsetY="2"
+                                                    Color="Black">
+                                                <TextBlock
+                                                        FontSize="28"
+                                                        Text="{x:Bind series_update_cycle_description}"/>
+                                            </controls:DropShadowPanel>
+
+                                        </StackPanel>
+                                    </RelativePanel>
+                                </DataTemplate>
+                            </FlipView.ItemTemplate>
+                        </FlipView>
+
+                        <ListBox
+                            x:Name="ListBoxIndicators"
+                            RelativePanel.Below="FlipViewBanner"
+                            RelativePanel.AlignHorizontalCenterWith="FlipViewBanner"
+                            Background="Transparent"
+                            UseSystemFocusVisuals="False"
+                            AllowFocusOnInteraction="False"
+                            IsFocusEngaged="False"
+                            ItemContainerStyle="{StaticResource Indicator}"
+                            ItemsSource="{Binding ItemsSource, ElementName=FlipViewBanner}"
+                            SelectedItem="{Binding ElementName=FlipViewBanner, Path=SelectedItem, Mode=TwoWay}"
+                            GotFocus="ListBoxIndicators_GotFocus"
+                            GettingFocus="ListBoxIndicators_GettingFocus">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        AllowFocusOnInteraction="False"
+                                        Width="60" Height="8" Margin="0 0 14 0" CornerRadius="4"
+                                        Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}"
+                                        PointerEntered="BorderIndicator_PointerEntered"
+                                        PointerExited="BorderIndicator_PointerExited"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ListBox>
+
+
+                    </RelativePanel>
+
+                    <!--See more adaptive size in VisualStateManager-->
+                    <Border
+                            x:Name="BorderLiveList"
+                            Height="237" Width="416"
+                            BorderThickness="8 8 8 0"
+                            BorderBrush="Black"
+                            Margin="0 274 82 0"
+                            Visibility="Visible"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top">
+
+                        <MediaPlayerElement
+                            x:Name="LiveListPlayer"
+                            Height="237" Width="416"
+                            AutoPlay="True"
+                            Source="http://sample.vodobox.com/big_buck_bunny_4k/big_buck_bunny_4k.m3u8"/>
+                    </Border>
+                    <!--This border layout on BorderLiveList, only used for coming into view-->
+                    <Border
+                            x:Name="BorderLiveList1"
+                            Height="237" Width="416"
+                            BorderThickness="8 8 8 0"
+                            Margin="0 20 82 0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top">
+                    </Border>
+
+                    <!--Fault Tolerance-->
+                    <StackPanel
+                            Grid.Row="1"
+                            x:Name="StackPanelPageLoadingError"
+                            HorizontalAlignment="Center"
+                            Margin="0 -300 0 0"
+                            Visibility="Collapsed">
+                        <Image
+                                Width="564"
+                                Height="287"
+                                Source="/Assets/Slices/ViuErrorTolerance.png" />
+                        <TextBlock
+                                x:Name="TextBlockPageLoadingError"
+                                Margin="0 40 0 0"
+                                FontSize="36"
+                                HorizontalAlignment="Center"
+                                Foreground="White"
+                                d:Text="Sorry, page loading error!(4012)"/>
+                        <Button
+                                x:Name="ButtonRetry"
+                                Margin="0 70 0 0"
+                                Width="480" Height="76"
+                                CornerRadius="5"
+                                FontSize="38"
+                                Content="alert_try_again"
+                                HorizontalAlignment="Center"
+                                Style="{StaticResource ButtonViuRevealStyle1}"
+                                Tapped="ButtonRetry_Tapped"
+                                PreviewKeyDown="ButtonRetry_PreviewKeyDown"/>
+                    </StackPanel>
+
+                    <muxc:ItemsRepeater
+                        Grid.Row="2"
+                        x:FieldModifier="public"
+                        x:Name="VerticalRepeater"
+                        Margin="0 -50 0 100"
+                        ItemsSource="{x:Bind verticalSource, Mode=OneWay}"
+                        ItemTemplate="{StaticResource VerticalTemplate}"
+                        PreviewKeyDown="VerticalRepeater_PreviewKeyDown">
+                    </muxc:ItemsRepeater>
+
+                </Grid>
+
+            </ScrollViewer>
+        </muxc:ItemsRepeaterScrollHost>
+
+    </Grid>
+
+
+
+</Page>

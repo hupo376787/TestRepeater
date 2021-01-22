@@ -1,0 +1,24 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ViuforHome.Styles">
+
+    <Style x:Name="ViuFocusVisualWithGlow" TargetType="FrameworkElement">
+        <!-- Override Reveal Focus default resources. -->
+        <!--<SolidColorBrush x:Key="SystemControlRevealFocusVisualBrush" Color="#FFBF00"/>
+        <SolidColorBrush x:Key="SystemControlFocusVisualSecondaryBrush" Color="Transparent"/>-->
+        <Setter Property="FocusVisualPrimaryThickness" Value="0" />
+        <Setter Property="FocusVisualSecondaryThickness" Value="6" />
+        <Setter Property="FocusVisualPrimaryBrush" Value="Transparent" />
+        <Setter Property="FocusVisualSecondaryBrush" Value="#FFBF00" />
+        <Setter Property="FocusVisualMargin" Value="-8 -4" />
+    </Style>
+
+    <Style x:Name="ViuFocusVisualGlowOnly" TargetType="FrameworkElement">
+        <Setter Property="FocusVisualPrimaryThickness" Value="0" />
+        <Setter Property="FocusVisualSecondaryThickness" Value="0" />
+        <Setter Property="FocusVisualPrimaryBrush" Value="#FFBF00" />
+        <Setter Property="FocusVisualSecondaryBrush" Value="#FFBF00" />
+        <Setter Property="FocusVisualMargin" Value="0" />
+    </Style>
+</ResourceDictionary>

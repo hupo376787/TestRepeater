@@ -1,0 +1,60 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="ThemeControlForegroundBaseHighBrush" Color="{ThemeResource SystemBaseHighColor}"/>
+
+    <SolidColorBrush x:Key="ViuYellow" Color="#FFBF00"/>
+    <SolidColorBrush x:Key="ViuPurple" Color="#E31C79"/>
+
+    <Color x:Key="ViuYellowPPlus">#FFBF00</Color>
+    <Color x:Key="ViuPurplePPlus">#E31C79</Color>
+
+    <Color x:Key="ViuPlayerColor1">#00383838</Color>
+    <Color x:Key="ViuPlayerColor2">#A61A1A1A</Color>
+
+    <SolidColorBrush x:Key="PointerHoverColor" Color="#FFBF00"/>
+    <SolidColorBrush x:Key="PointerPressColor" Color="#CD9A01"/>
+    <SolidColorBrush x:Key="NormalColor" Color="#424242"/>
+
+    <Color x:Key="ViuPageBackgroundColor1">#1E1E1E</Color>
+    <SolidColorBrush x:Key="ViuPageBackgroundColor" Color="#1A1A1A"/>
+
+    <SolidColorBrush x:Key="WhiteColor" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="Color7B7B7B" Color="#7B7B7B"/>
+
+    <SolidColorBrush x:Key="ViuMenuColor" Color="#1E1E1E"/>
+    <SolidColorBrush x:Key="ViuMenuMaskColor" Color="#000000" Opacity="0.8"/>
+    <SolidColorBrush x:Key="ViuPrimaryTextColor" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="ViuSecondaryTextColor" Color="#999999"/>
+    <SolidColorBrush x:Key="ViuHoverTextColor" Color="#333333"/>
+
+    <SolidColorBrush x:Key="ViuBannerFirstLineTextColor" Color="#FFBC00"/>
+    <SolidColorBrush x:Key="ViuLiveListTextColor" Color="#999999"/>
+    <SolidColorBrush x:Key="ViuCardFirstText" Color="#FDFFFE"/>
+    <SolidColorBrush x:Key="ViuCardFirstText1" Color="#FDFFFE" Opacity="0.8"/>
+
+    <SolidColorBrush x:Key="EpisodeBackgroundOpacityColor" Color="#2F2F2F" Opacity="0.75"/>
+    <SolidColorBrush x:Key="EpisodeBackgroundOpacityColor1" Color="#2F2F2F"/>
+
+    <SolidColorBrush x:Key="CPLogoBorderColor" Color="#19F3FF" Opacity="0.95"/>
+
+    <SolidColorBrush x:Key="ViuButtonBackgroundColor" Color="#424242" Opacity="0.8"/>
+
+    <SolidColorBrush x:Key="ViuCardBackgroundColor" Color="#222222"/>
+
+    <SolidColorBrush x:Key="ViuNotificationColor" Color="#FFFFFF" Opacity="0.8"/>
+
+    <SolidColorBrush x:Key="SecondSubtitleFontColor" Color="#FFFFDD" Opacity="1"/>
+    <SolidColorBrush x:Key="SecondSubtitleFontStrokeColor" Color="#FFFFFF" Opacity=".8"/>
+    <Color x:Key="SecondSubtitleFontShadowColor">#CC000000</Color>
+
+    <SolidColorBrush x:Key="ViuAlertColor" Color="#E63232" Opacity="1"/>
+
+    <SolidColorBrush x:Key="ViuGreyColor" Color="#666666" Opacity="0.8"/>
+
+    <SolidColorBrush x:Key="ViuFFCCCCCC" Color="#FFCCCCCC"/>
+    <SolidColorBrush x:Key="ViuCCFFFFFF" Color="#CCFFFFFF"/>
+
+    <SolidColorBrush x:Key="ViuLoadingBackColor" Color="#000000" Opacity="0.4"/>
+
+</ResourceDictionary>
